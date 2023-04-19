@@ -16,7 +16,7 @@ void Karta::setKolor(int _kolor) {
 }
 
 void Karta::setWartosc(int _wartosc) {
-    if (_wartosc < 14) {
+    if (_wartosc < 13) {
         figura = figury[_wartosc];
         wartosc = wartosci[_wartosc];
     }
