@@ -7,12 +7,11 @@ using namespace std;
 int main()
 {
 	Kasyno k1;
-	k1.pokaz();
-	k1.shuffle();
-	cout << endl;
-	cout << endl;
-	k1.pokaz();
-	k1.p1.wezKarte(k1.dajKarte());
-	cout << endl;
-	k1.p1.show();
+	
+	k1.play();
+	//std::cin.get();
+	
+	
+
+
 }
