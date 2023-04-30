@@ -16,6 +16,7 @@ public:
 	void pokaz();
 	void shuffle();
 	Karta* dajKarte();
+	void save_game();
 
 };
 

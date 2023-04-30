@@ -2,22 +2,25 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <fstream>
+#include <iomanip>
+
+
 #define talia_size 52
+//ADD TEMPLETE TO CIN FUNCTION TO HAVE DIFFERENT TYPES
 
 void Kasyno::play()
 {
-    shuffle();
-    std::cout << std::endl;
-    std::cout << "punkty: " << p1.get_points() << std::endl;
-    std::cout << std::endl; std::cout << std::endl;
-    std::cout << "punkty: " << p2.get_points() << std::endl;
-    std::cout << std::endl;
-    
-    p1.wezKarte(dajKarte());
-    p1.wezKarte(dajKarte());
-    p2.wezKarte(dajKarte());
-    p2.wezKarte(dajKarte());
 
+    shuffle();
+    for (int i=0; i<2; i++)
+    p1.wezKarte(dajKarte());
+    for (int i = 0; i < 2; i++)
+    p2.wezKarte(dajKarte());
+    
+    p1.set_name("Matteo");
+    p2.set_name("Lampa");
+    
    
     while (true)
     {
@@ -28,7 +31,18 @@ void Kasyno::play()
             std::cout << std::endl;
             std::cout << "Gracz 1, czy dobierasz kartê? (t/n): ";
             char choice;
-            std::cin >> choice;
+            while (1)
+            {
+                std::cin >> choice;
+                if (std::cin.fail() == true)
+                {
+                    std::cout << "wrong input, type again" << std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                        , '\n');
+                }
+                else break;
+            }
             if (choice == 't')
             {
                 p1.wezKarte(dajKarte());
@@ -52,7 +66,18 @@ void Kasyno::play()
             std::cout << std::endl;
             std::cout << "Gracz 2, czy dobierasz kartê? (t/n): ";
             char choice;
-            std::cin >> choice;
+            while (1)
+            {
+                std::cin >> choice;
+                if (std::cin.fail() == true)
+                {
+                    std::cout << "wrong input, type again" << std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                        , '\n');
+                }
+                else break;
+            }
             if (choice == 't')
             {
                 p2.wezKarte(dajKarte());
@@ -97,6 +122,7 @@ void Kasyno::play()
             break;
         }
         
+        
     }
 
     
@@ -117,7 +143,34 @@ void Kasyno::play()
     
     
 }
+void Kasyno::save_game()
+{
+    std::ofstream file;
+    file.open("C:\\Users\\Matteo\\source\\repos\\blackjack_game\\blackjack_game\\save.txt", std::ofstream::out);
+    file << std::left << std::setw(20) << p1.get_name() ;
+    
+    for (int i = 0; i < p1.ammount_get(); i++)
+    {
+        file << std::left << p1.return_cards()[i].getFigura() << p1.return_cards()[i].getKolor();
+    }
+  
+    file <<std::right<< std::setw(20 - p1.ammount_get() * 2) << p1.get_points() << std::endl;
 
+
+
+
+
+
+    file << std::left << std::setw(20) << p2.get_name();
+
+    for (int i = 0; i < p2.ammount_get(); i++)
+    {
+        file << std::left << p2.return_cards()[i].getFigura() << p2.return_cards()[i].getKolor();
+    }
+
+    file << std::right << std::setw(20 - p2.ammount_get() * 2) << p2.get_points() << std::endl;
+
+}
 
 Kasyno::Kasyno(): p1(), p2()
 {

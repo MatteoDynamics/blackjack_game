@@ -6,9 +6,12 @@ using namespace std;
 
 int main()
 {
+	std::locale pol("pl_PL");
+	std::locale::global(pol);
+	std::cout.imbue(pol);
 	Kasyno k1;
-	
 	k1.play();
+	k1.save_game();
 	//std::cin.get();
 	
 	

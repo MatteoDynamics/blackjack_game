@@ -1,9 +1,9 @@
 #pragma once
 #include "Karta.h"
-class Kasyno;
 class Player
 {
 private:
+	std::string name;
 	Karta* cards;
 	int ammount;
 	int points;
@@ -16,12 +16,10 @@ public:
 	void show()const;
 	int get_points();
 	void setpoints(int point) { points = point; };
-	void reset_stats()
-	{	
-		ammount = 0;
-		points = 0;
-		pass = false;
-		delete[] cards;
-		cards = nullptr;
-	}
+	void reset_stats();
+	void set_name(const std::string&name);
+	std::string get_name() { return name; };
+	Karta* return_cards() { return cards; };
+	int ammount_get() { return ammount; };
+	
 };
