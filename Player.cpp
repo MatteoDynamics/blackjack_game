@@ -64,4 +64,5 @@ void Player::show() const
 	{
 		cards[i].wypisz();
 	}
+	
 }

@@ -5,174 +5,187 @@
 #include <fstream>
 #include <iomanip>
 
-
+using namespace std;
 #define talia_size 52
 //ADD TEMPLETE TO CIN FUNCTION TO HAVE DIFFERENT TYPES
+bool all_players_passed(Player* players, int p_num)
+{
+    for (int i = 0; i < p_num; i++)
+    {
+        if (!players[i].pass_acc())
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void Kasyno::play()
 {
-
-    shuffle();
-    for (int i=0; i<2; i++)
-    p1.wezKarte(dajKarte());
-    for (int i = 0; i < 2; i++)
-    p2.wezKarte(dajKarte());
-    
-    p1.set_name("Matteo");
-    p2.set_name("Lampa");
-    
-   
-    while (true)
+    //PLAYER NUMBER INPUT
+    cout << "how many players?: " << endl;
+    while (1)
     {
- 
-        if (!p1.pass_acc())
+        std::cin >> p_num;
+        if (std::cin.fail() == true || p_num>3 || p_num<1)
         {
-            p1.show();
-            std::cout << std::endl;
-            std::cout << "Gracz 1, czy dobierasz kartê? (t/n): ";
-            char choice;
-            while (1)
-            {
-                std::cin >> choice;
-                if (std::cin.fail() == true)
-                {
-                    std::cout << "wrong input, type again" << std::endl;
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max()
-                        , '\n');
-                }
-                else break;
-            }
-            if (choice == 't')
-            {
-                p1.wezKarte(dajKarte());
-            }
-            else
-            {
-                p1.pass_set(true);
-            }
-            p1.show();
-            std::cout << std::endl;
-            std::cout << "punkty: " << p1.get_points()<<std::endl;
-            std::cout << std::endl;
-            
+            std::cout << "wrong input, type again, players <1,3>" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                , '\n');
         }
-
-        
-        if (!p2.pass_acc())
-        {
-            p2.show();
-
-            std::cout << std::endl;
-            std::cout << "Gracz 2, czy dobierasz kartê? (t/n): ";
-            char choice;
-            while (1)
-            {
-                std::cin >> choice;
-                if (std::cin.fail() == true)
-                {
-                    std::cout << "wrong input, type again" << std::endl;
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max()
-                        , '\n');
-                }
-                else break;
-            }
-            if (choice == 't')
-            {
-                p2.wezKarte(dajKarte());
-            }
-            else
-            {
-                p2.pass_set(true);
-            }
-            p2.show();
-            std::cout << std::endl;
-            std::cout << "punkty: " << p2.get_points() << std::endl;
-            std::cout << std::endl;
-        }
-
-       
-        if (p1.get_points() > 21)
-        {
-            std::cout << "Gracz 2 wygrywa!" << std::endl;
-            break;
-        }
-        if (p2.get_points() > 21)
-        {
-            std::cout << "Gracz 1 wygrywa!" << std::endl;
-            break;
-        }
-
-        
-        if (p1.pass_acc() && p2.pass_acc())
-        {
-            if (p1.get_points() == 21 || p1.get_points() > p2.get_points() && p1.get_points() <= 21 || p2.get_points() > 21)
-            {
-                std::cout << "Gracz 1 wygrywa!" << std::endl;
-            }
-            else if (p2.get_points() == 21 || p2.get_points() > p1.get_points() && p2.get_points() <= 21 || p1.get_points() > 21)
-            {
-                std::cout << "Gracz 2 wygrywa!" << std::endl;
-            }
-            else
-            {
-                std::cout << "Remis!" << std::endl;
-            }
-            break;
-        }
-        
-        
+        else break;
     }
-
-    
-    std::cout << "New Game(y/n)?" << std::endl;
-    char new_game;
-    std::cin >> new_game;
-    if (new_game == 'y')
-    {
-        shuffle();
-        this->p1.reset_stats();
-        this->p2.reset_stats();
-        this->play();
-    }
-    else
+    players = new Player[p_num];
+    if (players == nullptr)
     {
         return;
     }
-    
-    
+    //NAME INPUT
+
+    for (int i = 0; i < p_num; i++)
+    {
+        players[i].set_name("PATRYK");
+    }
+
+    for (int i = 0; i < p_num; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            players[i].wezKarte(dajKarte());
+        }
+    }
+
+    for (int i = 0; i < p_num; i++)
+    {
+            players[i].show();
+            cout << endl;
+    }
+    /////////////////////////////////////////////////////////////////
+
+    while (true)
+    {
+        
+        for (int i = 0; i < p_num; i++)
+        {
+            if (!players[i].pass_acc())
+            {
+                char choice;
+                players[i].show();
+                cout << "Player "<<players[i].get_name()<<i+1<<"points: " << players[i].get_points() << std::endl;
+                std::cout << "Player "<<i<<", czy dobierasz kartê ? (y / n) : ";
+                while (1)
+                {
+                    std::cin >> choice;
+                    if (std::cin.fail() == true)
+                    {
+                        std::cout << "wrong input, type again" << std::endl;
+                        std::cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                            , '\n');
+                    }
+                    else break;
+                }
+
+                if (choice == 'y')
+                {
+                    players[i].wezKarte(dajKarte());
+                }
+                else
+                {
+                    players[i].pass_set(true);
+                }
+                
+            }
+            
+            players[i].show();
+            cout << std::endl;
+            cout << "points: " << players[i].get_points() << std::endl;
+
+            if (all_players_passed(players, p_num))
+            {
+                int max_points = -1;
+                int winner = -1;
+                bool tie = false;
+                for (int i = 0; i < p_num; i++)
+                {
+                    int points = players[i].get_points();
+                    if (points > max_points && points <= 21)
+                    {
+                        max_points = points;
+                        winner = i;
+                        tie = false;
+                    }
+                    else if (points == max_points && points <= 21)
+                    {
+                        tie = true;
+                    }
+                }
+
+                if (tie)
+                {
+                    std::cout << "Remis!" << std::endl;
+                }
+                else
+                {
+                    std::cout << players[winner].get_name() << winner +1 << " wygrywa!" << std::endl;
+                }
+            }
+
+        }
+        bool new_game = false;
+        char choice;
+        std::cout << "New game? ";
+        while (1)
+        {
+            std::cin >> choice;
+            if (std::cin.fail() == true)
+            {
+                std::cout << "wrong input, type again" << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                    , '\n');
+            }
+            else break;
+        }
+
+        if (choice == 'y')
+        {
+            for (int i = 0; i < p_num; i++)
+            {
+                players[i].reset_stats();
+            }
+            play();
+        }
+        else
+        {
+            break;
+        }break;
+    }
 }
+
 void Kasyno::save_game()
 {
     std::ofstream file;
-    file.open("C:\\Users\\Matteo\\source\\repos\\blackjack_game\\blackjack_game\\save.txt", std::ofstream::out);
-    file << std::left << std::setw(20) << p1.get_name() ;
-    
-    for (int i = 0; i < p1.ammount_get(); i++)
+    file.open("save.txt", ofstream::out);
+    for (int i = 0; i < p_num; i++)
     {
-        file << std::left << p1.return_cards()[i].getFigura() << p1.return_cards()[i].getKolor();
+        file << setw(20) << left << players[i].get_name();
+        for (int j = 0; j < players[i].ammount_get(); j++)
+        {
+            file << players[i].return_cards(j)->getFigura() << players[i].return_cards(j)->getKolor();
+           // file << players[i].return_cards()->getKolor();
+        }
+        file << setw(20- players[i].ammount_get()*2) << right << players[i].get_points();
+        file << endl;
+        
     }
-  
-    file <<std::right<< std::setw(20 - p1.ammount_get() * 2) << p1.get_points() << std::endl;
-
-
-
-
-
-
-    file << std::left << std::setw(20) << p2.get_name();
-
-    for (int i = 0; i < p2.ammount_get(); i++)
-    {
-        file << std::left << p2.return_cards()[i].getFigura() << p2.return_cards()[i].getKolor();
-    }
-
-    file << std::right << std::setw(20 - p2.ammount_get() * 2) << p2.get_points() << std::endl;
-
+    file.close();
 }
 
-Kasyno::Kasyno(): p1(), p2()
+
+Kasyno::Kasyno() : talia(), wydane_karty(), wydane(0), p_num(0), players(nullptr)
 {
     int index = 0;
     for (int k = 0; k < 4; k++) {
@@ -195,7 +208,7 @@ void Kasyno::pokaz()
 
 void Kasyno::shuffle()
 {
-    srand(time(NULL));
+    srand(time_t(NULL));
     int los1,los2;
     for (int i = 0; i < 100; i++) 
     {

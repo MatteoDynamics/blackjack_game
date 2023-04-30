@@ -5,13 +5,13 @@ class Kasyno
 {
 private:
 	Karta talia[52];
-	bool wydane_karty[52] = { false };
-	int wydane = 0;
+	bool wydane_karty[52];
+	int wydane;
+	int p_num;
+	Player* players;
 	
 public:
 	void play();
-	Player p1;
-	Player p2;
 	Kasyno();
 	void pokaz();
 	void shuffle();

@@ -19,7 +19,7 @@ public:
 	void reset_stats();
 	void set_name(const std::string&name);
 	std::string get_name() { return name; };
-	Karta* return_cards() { return cards; };
+	Karta* return_cards(int index) { return &cards[index]; };
 	int ammount_get() { return ammount; };
 	
 };

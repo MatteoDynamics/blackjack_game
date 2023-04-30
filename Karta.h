@@ -13,5 +13,5 @@ public:
     char getKolor() const { return kolor; }
     char getFigura() const { return figura; }
     int getWartosc() const { return wartosc; }
-    void wypisz() const { std::cout << figura << kolor; }
+    void wypisz() const { std::cout << figura << kolor<<std::endl; }
 };
