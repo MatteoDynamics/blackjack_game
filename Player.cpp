@@ -64,6 +64,6 @@ void Player::show() const
 		
 		cards[i].wypisz();
 	}
-	std::cout << "Punkty: " << points;
+	std::cout << "Punkty: " << points << std::endl << std::endl;
 	
 }

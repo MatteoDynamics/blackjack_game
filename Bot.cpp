@@ -9,6 +9,13 @@ constexpr int risky = 3;
 constexpr int normal = 2;
 constexpr int safe = 1;
 
+void Bot::reset_stats()
+{
+	Player::reset_stats();
+	odwaga = 1;
+	number = 0;
+}
+
 void Bot::wezKarte(Karta* _karta)
 {
 	if (odwaga == safe) {

@@ -28,5 +28,6 @@ public:
 	void show_table()const;
 	void pass_or_not();
 	void new_game();
+	void who_won();
 };
 

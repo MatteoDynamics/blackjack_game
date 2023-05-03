@@ -17,5 +17,6 @@ public:
 	void set_odwaga(int odwaga) { this->odwaga = odwaga; };
 	int get_odwaga() { return odwaga; };
 	void set_name();
+	void reset_stats();
 };
 

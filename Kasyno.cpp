@@ -45,6 +45,7 @@ void Kasyno::play()
     /////////////////////////////////////////////////////////////////
     set_bot_risk();
     pass_or_not();
+    who_won();
     new_game();
     //delete[] players;
    // delete[] bots;
@@ -75,7 +76,12 @@ void Kasyno::new_game()
             {
                 players[i].reset_stats();
             }
+            for (int i = 0; i < p_num; i++)
+            {
+                bots[i].reset_stats();
+            }
             play();
+            break;
         }
         else
         {
@@ -124,6 +130,15 @@ void Kasyno::pass_or_not()
             players[i].show();
             cout << "points: " << players[i].get_points() << std::endl;
             cout << std::endl;
+        }break;
+    }
+}
+void Kasyno::who_won()
+{
+    while(1)
+    {
+        for (int i = 0; i < p_num; i++)
+        {
 
             if (all_players_passed(players, p_num))
             {
@@ -143,6 +158,7 @@ void Kasyno::pass_or_not()
                     {
                         tie = true;
                     }
+
                 }
 
                 if (tie)
@@ -161,7 +177,7 @@ void Kasyno::pass_or_not()
                     show_table();
                     break;
                 }
-            }
+            }pass_or_not();
 
         }break;
     }
@@ -208,6 +224,10 @@ bool all_players_passed(Player* players, int p_num)
 {
     for (int i = 0; i < p_num; i++)
     {
+        if (players[i].get_points()>21)
+        {
+            return true;
+        }
         if (!players[i].pass_acc())
         {
             return false;
