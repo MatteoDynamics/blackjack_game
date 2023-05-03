@@ -17,7 +17,7 @@ public:
 	int get_points();
 	void setpoints(int point) { points = point; };
 	void reset_stats();
-	void set_name(const std::string&name);
+	void set_name();
 	std::string get_name() { return name; };
 	Karta* return_cards(int index) { return &cards[index]; };
 	int ammount_get() { return ammount; };

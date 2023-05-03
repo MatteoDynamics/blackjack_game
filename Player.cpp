@@ -1,9 +1,10 @@
 #include "Player.h"
 
-void Player::set_name(const std::string &player_name)
+void Player::set_name()
 {
-	name = player_name;
-	/*while (1)
+	std::cout << "Type name: " << std::endl;
+	std::string name;
+	while (1)
 	{
 		std::cin >> name;
 		if (std::cin.fail() == true)
@@ -13,9 +14,11 @@ void Player::set_name(const std::string &player_name)
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max()
 				, '\n');
 		}
-		else break;
+		else
+			this->name = name;
+		break;
 	}
-	*/
+	
 }
 
 void Player::reset_stats()
@@ -60,8 +63,10 @@ int Player::get_points()
 
 void Player::show() const
 {
+	std::cout << name << std::endl;
 	for (int i = 0; i < ammount; i++)
 	{
+		
 		cards[i].wypisz();
 	}
 	
