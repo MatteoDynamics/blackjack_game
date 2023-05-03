@@ -23,23 +23,6 @@ void Kasyno::play()
         players[i].set_name();
     }
 
-    cout << "type bot risk lvl---> 1lowest risk---> 3 highest risk?: " << endl;
-    int risk;
-    while (1)
-    {
-        
-        std::cin >> risk;
-        if (std::cin.fail() == true || risk > 3 || risk < 1)
-        {
-            std::cout << "wrong input, type again, players <1,3>" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max()
-                , '\n');
-        }
-        else
-        break;
-    }
-
 
     init_table();
 
@@ -51,81 +34,25 @@ void Kasyno::play()
 
     for (int i = 0; i < b_num; i++)
     {
+        bots[i].set_name();
+    }
+
+    for (int i = 0; i < b_num; i++)
+    {
         bots[i].show();
         cout << endl;
     }
     /////////////////////////////////////////////////////////////////
-
+    set_bot_risk();
+    pass_or_not();
+    new_game();
+    //delete[] players;
+   // delete[] bots;
+}
+void Kasyno::new_game()
+{
     while (true)
     {
-        
-        for (int i = 0; i < p_num; i++)
-        {
-            if (!players[i].pass_acc())
-            {
-                char choice;
-                players[i].show();
-                cout << "Player "<<players[i].get_name()<<" points: " << players[i].get_points() << std::endl;
-                std::cout << "Player "<<i<<", czy dobierasz kartê ? (y / n) : ";
-                while (1)
-                {
-                    std::cin >> choice;
-                    if (std::cin.fail() == true)
-                    {
-                        std::cout << "wrong input, type again" << std::endl;
-                        std::cin.clear();
-                        std::cin.ignore(std::numeric_limits<std::streamsize>::max()
-                            , '\n');
-                    }
-                    else break;
-                }
-
-                if (choice == 'y')
-                {
-                    players[i].wezKarte(dajKarte());
-                }
-                else
-                {
-                    players[i].pass_set(true);
-                }
-                
-            }
-            
-            players[i].show();
-            cout << std::endl;
-            cout << "points: " << players[i].get_points() << std::endl;
-
-            if (all_players_passed(players, p_num))
-            {
-                int max_points = -1;
-                int winner = -1;
-                bool tie = false;
-                for (int i = 0; i < p_num; i++)
-                {
-                    int points = players[i].get_points();
-                    if (points > max_points && points <= 21)
-                    {
-                        max_points = points;
-                        winner = i;
-                        tie = false;
-                    }
-                    else if (points == max_points && points <= 21)
-                    {
-                        tie = true;
-                    }
-                }
-
-                if (tie)
-                {
-                    std::cout << "Remis!" << std::endl;
-                }
-                else
-                {
-                    std::cout << players[winner].get_name() << winner +1 << " wygrywa!" << std::endl;
-                }
-            }
-
-        }
         bool new_game = false;
         char choice;
         std::cout << "New game? ";
@@ -155,8 +82,126 @@ void Kasyno::play()
             break;
         }
     }
-    //delete[] players;
-   // delete[] bots;
+}
+
+void Kasyno::pass_or_not()
+{
+    while (true)
+    {
+
+        for (int i = 0; i < p_num; i++)
+        {
+            if (!players[i].pass_acc())
+            {
+                char choice;
+                players[i].show();
+                cout << "Player " << players[i].get_name() << " points: " << players[i].get_points() << std::endl;
+                std::cout << "Player " << players[i].get_name() << ", czy dobierasz kartê ? (y / n) : ";
+                while (1)
+                {
+                    std::cin >> choice;
+                    if (std::cin.fail() == true)
+                    {
+                        std::cout << "wrong input, type again" << std::endl;
+                        std::cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                            , '\n');
+                    }
+                    else break;
+                }
+
+                if (choice == 'y')
+                {
+                    players[i].wezKarte(dajKarte());
+                }
+                else
+                {
+                    players[i].pass_set(true);
+                }
+
+            }
+
+            players[i].show();
+            cout << "points: " << players[i].get_points() << std::endl;
+            cout << std::endl;
+
+            if (all_players_passed(players, p_num))
+            {
+                int max_points = -1;
+                int winner = -1;
+                bool tie = false;
+                for (int i = 0; i < p_num; i++)
+                {
+                    int points = players[i].get_points();
+                    if (points > max_points && points <= 21)
+                    {
+                        max_points = points;
+                        winner = i;
+                        tie = false;
+                    }
+                    else if (points == max_points && points <= 21)
+                    {
+                        tie = true;
+                    }
+                }
+
+                if (tie)
+                {
+                    std::cout << "Remis!" << std::endl;
+                    std::cout << std::endl;
+                    std::cout << std::endl;
+                        show_table();
+                    break;
+                }
+                else
+                {
+                    std::cout << players[winner].get_name() << " wygrywa!" << std::endl;
+                    std::cout << std::endl;
+                    std::cout << std::endl;
+                    show_table();
+                    break;
+                }
+            }
+
+        }break;
+    }
+}
+
+void Kasyno::show_table()const
+{
+    for (int i = 0; i < p_num; i++)
+    {
+        players[i].show();
+    }
+
+    for (int i = 0; i < b_num; i++)
+    {
+        bots[i].show();
+    }
+}
+
+void Kasyno::set_bot_risk()
+{
+    cout << "type bot risk lvl---> 1lowest risk---> 3 highest risk?: " << endl;
+    int risk;
+    while (1)
+    {
+
+        std::cin >> risk;
+        if (std::cin.fail() == true || risk > 3 || risk < 1)
+        {
+            std::cout << "wrong input, type again, players <1,3>" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max()
+                , '\n');
+        }
+        else
+            for (int i = 0; i < b_num; i++)
+            {
+                bots[i].set_odwaga(risk);
+            }
+            break;
+    }
 }
 
 bool all_players_passed(Player* players, int p_num)
@@ -246,9 +291,22 @@ void Kasyno::save_game()
         for (int j = 0; j < players[i].ammount_get(); j++)
         {
             file << players[i].return_cards(j)->getFigura() << (int)players[i].return_cards(j)->getKolor();
-           // file << players[i].return_cards()->getKolor();
+            // file << players[i].return_cards()->getKolor();
         }
-        file << setw(20- players[i].ammount_get()*2) << right << players[i].get_points();
+        file << setw(20 - players[i].ammount_get() * 2) << right << players[i].get_points();
+        file << endl;
+
+    }
+
+    for (int i = 0; i < b_num; i++)
+    {
+        file << setw(20) << left << bots[i].get_name();
+        for (int j = 0; j < bots[i].ammount_get(); j++)
+        {
+            file << bots[i].return_cards(j)->getFigura() << (int)bots[i].return_cards(j)->getKolor();
+            // file << players[i].return_cards()->getKolor();
+        }
+        file << setw(20 - bots[i].ammount_get() * 2) << right << bots[i].get_points();
         file << endl;
         
     }

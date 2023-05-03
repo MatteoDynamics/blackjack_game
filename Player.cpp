@@ -55,11 +55,6 @@ void Player::wezKarte(Karta* _karta) {
 }
 
 
-int Player::get_points()
-{
-	return points;
-}
-
 
 void Player::show() const
 {
@@ -69,5 +64,6 @@ void Player::show() const
 		
 		cards[i].wypisz();
 	}
+	std::cout << "Punkty: " << points;
 	
 }

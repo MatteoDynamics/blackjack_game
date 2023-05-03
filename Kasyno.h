@@ -25,6 +25,8 @@ public:
 	void alocate_bots();
 	void init_table();
 	void set_bot_risk();
-
+	void show_table()const;
+	void pass_or_not();
+	void new_game();
 };
 
