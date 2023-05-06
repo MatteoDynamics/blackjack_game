@@ -4,13 +4,14 @@
 #include <random>
 #include <fstream>
 #include <iomanip>
+#define _CRT_SECURE_NO_WARNINGS
 constexpr int risky = 3;
 constexpr int normal = 2;
 constexpr int safe = 1;
 using namespace std;
 #define talia_size 52
 //ADD TEMPLETE TO CIN FUNCTION TO HAVE DIFFERENT TYPES
-bool all_players_passed(Player* players, int p_num);
+bool all_players_passed(Player* players, Bot* bots, int p_num, int b_num);
 void Kasyno::play()
 {
     //PLAYER NUMBER INPUT
@@ -45,10 +46,11 @@ void Kasyno::play()
     /////////////////////////////////////////////////////////////////
     set_bot_risk();
     pass_or_not();
+    
     who_won();
     new_game();
-    //delete[] players;
-   // delete[] bots;
+    
+    
 }
 void Kasyno::new_game()
 {
@@ -75,11 +77,11 @@ void Kasyno::new_game()
             for (int i = 0; i < p_num; i++)
             {
                 players[i].reset_stats();
-            }
-            for (int i = 0; i < p_num; i++)
+            }delete[]players;
+            for (int i = 0; i < b_num; i++)
             {
                 bots[i].reset_stats();
-            }
+            }delete[]bots;
             play();
             break;
         }
@@ -126,65 +128,120 @@ void Kasyno::pass_or_not()
                 }
 
             }
+            
 
             players[i].show();
             cout << "points: " << players[i].get_points() << std::endl;
             cout << std::endl;
-        }break;
+        }
+        
+        for (int i = 0; i < b_num; i++)
+        {
+            bots[i].wezKarte(dajKarte());
+        }
+        break;
     }
 }
+
 void Kasyno::who_won()
 {
-    while(1)
+    bool all_pass = false;
+    while (!all_pass)
     {
+        all_pass = all_players_passed(players, bots, p_num, b_num);
+        if (all_pass)
+        {
+            int max_points = -1;
+            int winner = -1;
+            int bot_winner = -1;
+            bool tie = false;
+            for (int i = 0; i < p_num; i++)
+            {
+                int points = players[i].get_points();
+                if (points > max_points && points <= 21)
+                {
+                    max_points = points;
+                    winner = i;
+                    tie = false;
+                }
+                else if (points == max_points && points <= 21)
+                {
+                    tie = true;
+                }
+            }
+            for (int i = 0; i < b_num; i++)
+            {
+                int points = bots[i].get_points();
+                if (points > max_points && points <= 21)
+                {
+                    max_points = points;
+                    bot_winner = i;
+                    winner = -1;
+                    tie = false;
+                }
+                else if (points == max_points && points <= 21)
+                {
+                    tie = true;
+                }
+            }
+
+            if (tie)
+            {
+                cout << "*****************************" << endl;
+                std::cout << "Remis!" << std::endl;
+                cout << "*****************************" << endl;
+                std::cout << std::endl;
+                std::cout << std::endl;
+                show_table();
+                break;
+            }
+            else if (winner >= 0)
+            {
+                cout << "*****************************" << endl;
+                std::cout << players[winner].get_name() << " wygrywa!" << std::endl;
+                cout << "*****************************" << endl;
+                std::cout << std::endl;
+                std::cout << std::endl;
+                show_table();
+                break;
+            }
+            else if (bot_winner >= 0)
+            {
+                cout << "*****************************" << endl;
+                std::cout << "Bot " << bot_winner + 1 << " wygrywa!" << std::endl;
+                cout << "*****************************" << endl;
+                std::cout << std::endl;
+                std::cout << std::endl;
+                show_table();
+                break;
+            }
+            break;
+        }
         for (int i = 0; i < p_num; i++)
         {
-
-            if (all_players_passed(players, p_num))
+            if (!players[i].pass_acc())
             {
-                int max_points = -1;
-                int winner = -1;
-                bool tie = false;
-                for (int i = 0; i < p_num; i++)
-                {
-                    int points = players[i].get_points();
-                    if (points > max_points && points <= 21)
-                    {
-                        max_points = points;
-                        winner = i;
-                        tie = false;
-                    }
-                    else if (points == max_points && points <= 21)
-                    {
-                        tie = true;
-                    }
-
-                }
-
-                if (tie)
-                {
-                    std::cout << "Remis!" << std::endl;
-                    std::cout << std::endl;
-                    std::cout << std::endl;
-                        show_table();
-                    break;
-                }
-                else
-                {
-                    std::cout << players[winner].get_name() << " wygrywa!" << std::endl;
-                    std::cout << std::endl;
-                    std::cout << std::endl;
-                    show_table();
-                    break;
-                }
-            }pass_or_not();
-
-        }break;
+                pass_or_not();
+            }
+        }
+        for (int i = 0; i < b_num; i++)
+        {
+            if (!bots[i].pass_acc())
+            {
+                pass_or_not();
+            }
+        }
+        show_table();
     }
 }
+
+
+
 
 void Kasyno::show_table()const
 {
+    std::cout << "TABLE SHOW" << endl;
+    cout << "_____________________________" << endl;
     for (int i = 0; i < p_num; i++)
     {
         players[i].show();
@@ -220,7 +277,7 @@ void Kasyno::set_bot_risk()
     }
 }
 
-bool all_players_passed(Player* players, int p_num)
+bool all_players_passed(Player* players, Bot *bots, int p_num, int b_num)
 {
     for (int i = 0; i < p_num; i++)
     {
@@ -229,6 +286,17 @@ bool all_players_passed(Player* players, int p_num)
             return true;
         }
         if (!players[i].pass_acc())
+        {
+            return false;
+        }
+    }
+    for (int i = 0; i < b_num; i++)
+    {
+        if (bots[i].get_points() > 21)
+        {
+            return true;
+        }
+        if (!bots[i].pass_acc())
         {
             return false;
         }

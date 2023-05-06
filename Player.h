@@ -1,10 +1,12 @@
 #pragma once
 #include "Karta.h"
+class Kasyno;
 class Player
 {
 
 	std::string name;
 	Karta* cards;
+	Kasyno* kasyno;
 	int ammount;
 	int points;
 	bool pass;
@@ -16,7 +18,7 @@ public:
 	void show()const;
 	int get_points() { return points; };
 	void setpoints(int point) { points = point; };
-	void reset_stats();
+	bool reset_stats();
 	void set_name();
 	void set_name(const std::string& name) { this->name = name; }
 	std::string get_name() { return name; };

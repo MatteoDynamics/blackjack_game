@@ -1,22 +1,26 @@
 #pragma once
 #include "Player.h"
-class Kasyno;
+//class Kasyno;
 class Bot: public Player
 {
 	int odwaga;
-	int number;
+	static int number;
 	
 public:
 	Bot() :Player(), odwaga(1) {
-		static int bot_num;
-		bot_num++;
-		number = bot_num;
-		std::cout << "bot_num: " << bot_num << std::endl;
+		
+		static_inc();
+		std::cout << "bot_num: " << number << std::endl;
+		
+		
 	};
 	void wezKarte(Karta* _karta);
 	void set_odwaga(int odwaga) { this->odwaga = odwaga; };
 	int get_odwaga() { return odwaga; };
 	void set_name();
-	void reset_stats();
+	bool reset_stats();
+	static void static_inc() {
+		number++;
+	}
 };
 

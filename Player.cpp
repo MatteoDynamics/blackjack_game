@@ -21,13 +21,14 @@ void Player::set_name()
 	
 }
 
-void Player::reset_stats()
+bool Player::reset_stats()
 {
 	ammount = 0;
 	points = 0;
 	pass = false;
 	delete[] cards;
 	cards = nullptr;
+	return true;
 }
 
 void Player::wezKarte(Karta* _karta) {

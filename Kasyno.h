@@ -16,6 +16,7 @@ private:
 public:
 	void play();
 	Kasyno();
+	~Kasyno() { delete[] players; delete[] bots;}
 	void pokaz();
 	void shuffle();
 	Karta* dajKarte();
