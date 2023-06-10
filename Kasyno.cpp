@@ -4,6 +4,7 @@
 #include <random>
 #include <fstream>
 #include <iomanip>
+#include "Player.h"
 #define _CRT_SECURE_NO_WARNINGS
 constexpr int risky = 3;
 constexpr int normal = 2;
@@ -120,6 +121,11 @@ void Kasyno::pass_or_not()
 
                 if (choice == 'y')
                 {
+                    if (players[i].ammount_get() >= 10)
+                    {
+                        std::cerr << "Max cards is 10!";
+                        return;
+                    }
                     players[i].wezKarte(dajKarte());
                 }
                 else
@@ -373,6 +379,11 @@ void Kasyno::save_game()
 {
     std::ofstream file;
     file.open("save.txt", ofstream::out);
+    if (file.fail())
+    {
+        std::cerr << "File couldnt be open";
+        file.clear();
+    }
     for (int i = 0; i < p_num; i++)
     {
         file << setw(20) << left << players[i].get_name();
@@ -440,11 +451,6 @@ void Kasyno::shuffle()
 
 Karta* Kasyno::dajKarte()
 {
-    if (wydane == talia_size) {
-        std::cerr << "Brak kart w talii!";
-        return nullptr;
-    }
-
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(0, talia_size - 1);

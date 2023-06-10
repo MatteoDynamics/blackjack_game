@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include"Kasyno.h"
 void Player::set_name()
 {
 	std::cout << "Type name: " << std::endl;
@@ -21,50 +21,52 @@ void Player::set_name()
 	
 }
 
-bool Player::reset_stats()
-{
+bool Player::reset_stats() {
 	ammount = 0;
 	points = 0;
 	pass = false;
+	for (int i = 0; i < ammount; i++) {
+		delete cards[i];
+	}
 	delete[] cards;
 	cards = nullptr;
 	return true;
 }
 
-void Player::wezKarte(Karta* _karta) {
-	if (ammount >= 10) {
-		return; // Gracz nie mo¿e mieæ wiêcej ni¿ 10 kart
-	}
 
+void Player::wezKarte(Karta* _karta) {
+
+	//if (kasyno->ret_wydane() == 52)
+	//{
+	//	std::cerr << "Brak kart w talii!";//wszystkie karty wydane
+//		return; 
+//	}
 	points += _karta->getWartosc();
+
 	if (ammount == 0) {
-		cards = new Karta[1];
-		cards[0] = *_karta;
+		cards = new Karta*[1];
+		cards[0] = _karta;
 	}
 	else {
-		Karta* tmp = new Karta[ammount + 1];
+		Karta** tmp = new Karta * [ammount + 1];
 		for (int i = 0; i < ammount; i++) {
 			tmp[i] = cards[i];
 		}
-		tmp[ammount] = *_karta;
+		tmp[ammount] = _karta;
 		delete[] cards;
 		cards = tmp;
-
 	}
 	ammount++;
-	
 }
 
 
 
-void Player::show() const
-{
+
+void Player::show() const {
 	std::cout << name << std::endl;
-	for (int i = 0; i < ammount; i++)
-	{
-		
-		cards[i].wypisz();
+	for (int i = 0; i < ammount; i++) {
+		cards[i]->wypisz();
 	}
 	std::cout << "Punkty: " << points << std::endl << std::endl;
-	
 }
+

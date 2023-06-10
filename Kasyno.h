@@ -17,6 +17,8 @@ public:
 	void play();
 	Kasyno();
 	~Kasyno() { delete[] players; delete[] bots;}
+	Kasyno(const Kasyno& kopia) = delete;
+	Kasyno& operator=(const Kasyno& przypisanie) = delete;
 	void pokaz();
 	void shuffle();
 	Karta* dajKarte();
@@ -30,5 +32,6 @@ public:
 	void pass_or_not();
 	void new_game();
 	void who_won();
+	int ret_wydane() { return wydane; };
 };
 
