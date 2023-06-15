@@ -12,6 +12,9 @@ constexpr int safe = 1;
 using namespace std;
 #define talia_size 52
 //ADD TEMPLETE TO CIN FUNCTION TO HAVE DIFFERENT TYPES
+int Kasyno::ile_wydano() {
+    return wydane;
+}
 bool all_players_passed(Player* players, Bot* bots, int p_num, int b_num);
 void Kasyno::play()
 {
@@ -23,6 +26,7 @@ void Kasyno::play()
     for (int i = 0; i < p_num; i++)
     {
         players[i].set_name();
+        players[i].setKasyno(this);
     }
 
 
@@ -37,6 +41,7 @@ void Kasyno::play()
     for (int i = 0; i < b_num; i++)
     {
         bots[i].set_name();
+        bots[i].setKasyno(this);
     }
 
     for (int i = 0; i < b_num; i++)
@@ -49,6 +54,7 @@ void Kasyno::play()
     pass_or_not();
     
     who_won();
+    //ile_wydano();
     new_game();
     
     
@@ -83,6 +89,7 @@ void Kasyno::new_game()
             {
                 bots[i].reset_stats();
             }delete[]bots;
+            wydane = 0;
             play();
             break;
         }
@@ -143,6 +150,11 @@ void Kasyno::pass_or_not()
         
         for (int i = 0; i < b_num; i++)
         {
+            if (bots[i].ammount_get() >= 10)
+            {
+                std::cerr << "Max cards is 10!";
+                return;
+            }
             bots[i].wezKarte(dajKarte());
         }
         break;

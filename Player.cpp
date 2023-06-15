@@ -1,5 +1,5 @@
 #include "Player.h"
-#include"Kasyno.h"
+#include "Kasyno.h"
 void Player::set_name()
 {
 	std::cout << "Type name: " << std::endl;
@@ -36,11 +36,8 @@ bool Player::reset_stats() {
 
 void Player::wezKarte(Karta* _karta) {
 
-	//if (kasyno->ret_wydane() == 52)
-	//{
-	//	std::cerr << "Brak kart w talii!";//wszystkie karty wydane
-//		return; 
-//	}
+	
+	std::cout << "Ile wydane: " << kasyno->ile_wydano();
 	points += _karta->getWartosc();
 
 	if (ammount == 0) {

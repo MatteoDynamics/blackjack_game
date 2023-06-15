@@ -1,8 +1,8 @@
 #include "Bot.h"
+#include "Kasyno.h"
 #include "Karta.h"
 //#include "Player.h"
 #include <iostream>
-#include "Kasyno.h"
 #include <string>
 constexpr int bot_types = 3;
 constexpr int risky = 3;

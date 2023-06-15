@@ -2,9 +2,9 @@
 #include "Karta.h"
 #include "Player.h"
 #include "Bot.h"
+class Player;
 class Kasyno
 {
-private:
 	Karta talia[52];
 	bool wydane_karty[52];
 	int wydane;
@@ -23,8 +23,9 @@ public:
 	void shuffle();
 	Karta* dajKarte();
 	void save_game();
+	int ile_wydano();
 	int get_bnum() { return b_num; };
-	void alocate_players();
+	void alocate_players();   
 	void alocate_bots();
 	void init_table();
 	void set_bot_risk();
@@ -32,6 +33,5 @@ public:
 	void pass_or_not();
 	void new_game();
 	void who_won();
-	int ret_wydane() { return wydane; };
 };
 

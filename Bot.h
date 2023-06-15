@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-//class Kasyno;
 class Bot: public Player
 {
 	int odwaga;

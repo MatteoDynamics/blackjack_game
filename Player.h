@@ -13,7 +13,7 @@ class Player
 public:
 	bool pass_acc() { return pass; };
 	void pass_set(bool passed) { pass = passed; };
-	Player() : cards(nullptr), ammount(0), points(0), pass(false) {};
+	Player() : cards(nullptr), ammount(0), points(0), pass(false), kasyno(nullptr) {};
 	~Player()
 	{
 		if (cards != nullptr)
@@ -34,5 +34,8 @@ public:
 	Karta* return_cards(int index) { return cards[index]; };
 	int ammount_get() { return ammount; };
 	void add_points(int wartosc) { points += wartosc; };
+	void setKasyno(Kasyno* kasyno) {
+		this->kasyno = kasyno;
+	}
 	
 };
